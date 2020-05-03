@@ -178,3 +178,13 @@ dist
 .tern-port
 
 ./config.json
+.idea/$CACHE_FILE$
+.idea/.gitignore
+.idea/codeStyles/
+.idea/jsLibraryMappings.xml
+.idea/misc.xml
+.idea/modules.xml
+.idea/vcs.xml
+.idea/warzone-tracker.iml
+config.json
+package-lock.json
