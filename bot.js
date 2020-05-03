@@ -1,10 +1,10 @@
-const {prefix, token, owner} = require("./config.json");
+require('dotenv').config();
 const {CommandoClient} = require('discord.js-commando');
 const path = require('path');
 
 const client = new CommandoClient({
-    commandPrefix: prefix,
-    owner: owner
+    commandPrefix: process.env.PREFIX,
+    owner: process.env.OWNER
 });
 
 client.registry.registerDefaultTypes()
@@ -21,4 +21,4 @@ client.once('ready', () => {
     client.user.setActivity('Jorge be bad', { type: "WATCHING" })
 });
 
-client.login(token);
+client.login(process.env.CLIENT_TOKEN);

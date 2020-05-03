@@ -1,0 +1,6 @@
+Create a `.env` file containing
+```
+CLIENT_TOKEN=[YOUR_BOT_TOKEN]
+OWNER=[YOUR_OWNER_ID]
+PREFIX=[DEFAULT_BOT_PREFIX]
+```
