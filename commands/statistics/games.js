@@ -30,6 +30,12 @@ module.exports = class GamesCommand extends Command {
                     key: 'username',
                     prompt: 'What is the username?',
                     type: 'string',
+                },
+                {
+                    key: 'amount',
+                    prompt: 'How many games do you want to fetch?',
+                    type: 'integer',
+                    default: 5
                 }
             ],
             throttling: {
@@ -39,12 +45,12 @@ module.exports = class GamesCommand extends Command {
         });
     }
 
-    run(message, {platform, username}) {
+    run(message, {platform, username, amount}) {
         const slug = common.determinePlatform(platform);
         const usernameFormatted = encodeURIComponent(username);
         instance.get(`${slug}\/${usernameFormatted}`)
                 .then(function (response) {
-                        let recentGamesEmbed = getRecentGames(response);
+                        let recentGamesEmbed = getRecentGames(response, amount);
                         recentGamesEmbed.setTitle(`Recent matches for ${username}`);
                         message.embed(recentGamesEmbed);
                     }
@@ -58,11 +64,11 @@ module.exports = class GamesCommand extends Command {
 
 };
 
-const getRecentGames = function (response) {
+const getRecentGames = function (response, amount) {
     let data = response.data['data'];
     const embed = new MessageEmbed();
     embed.setDescription("5 most recent matches are below");
-    const results = getMatches(data['matches']);
+    const results = getMatches(data['matches'], amount);
     for (const res of results['matches']) {
         const valString =
             `Placement: ${res['placement']}` + "\n" +
@@ -75,10 +81,10 @@ const getRecentGames = function (response) {
     return embed;
 };
 
-const getMatches = function(matchesRoot) {
+const getMatches = function(matchesRoot, amount) {
     const results = {matches: []};
     // get 5 matches
-    for (const match of matchesRoot.slice(0, 5)) {
+    for (const match of matchesRoot.slice(0, amount)) {
         const matchID = match['attributes']['id'];
         const date = new Date(match['metadata']['timestamp']);
         const newDate = dateFormat.format(date, "MMMM do, yyyy hh:mm a");
